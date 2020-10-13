@@ -15,6 +15,11 @@ void listSupportedOptions()
   std::cout << "uciok" << std::endl;
 }
 
+void setupFinished()
+{
+  std::cout << "readyok" << std::endl;
+}
+
 std::string getLine()
 {
   std::string line;
@@ -59,6 +64,11 @@ int main()
     {
       identifyEngine();
       listSupportedOptions();
+      continue;
+    }
+    if (tokens[0].compare("isready") == 0)
+    {
+      setupFinished();
       continue;
     }
     if (tokens[0].compare("quit") == 0)
