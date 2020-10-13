@@ -1,4 +1,7 @@
 #include "interface.h"
+
+#include "board.h"
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -54,6 +57,7 @@ std::vector<std::string> tokenizeLine(const std::string line)
 
 int main()
 {
+  Board board;
   while (1)
   {
     std::vector<std::string> tokens = tokenizeLine(getLine());
@@ -68,6 +72,7 @@ int main()
     }
     if (tokens[0].compare("isready") == 0)
     {
+      board.resetBoard();
       setupFinished();
       continue;
     }
