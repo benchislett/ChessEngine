@@ -18,7 +18,8 @@ void listSupportedOptions()
   std::cout << "uciok" << std::endl;
 }
 
-void printBoard(const Board board) {
+void printBoard(const Board board)
+{
   std::cout << "[debug] board state: " << std::endl;
   std::cout << board << std::endl;
 }
@@ -63,12 +64,19 @@ std::vector<std::string> tokenizeLine(const std::string line)
 int main()
 {
   bool debug = false;
+  std::array<std::string, 4> acceptedTokens = {"uci", "debug", "isready", "quit"};
   Board board;
   while (1)
   {
     std::vector<std::string> tokens = tokenizeLine(getLine());
+    while (tokens.size() && !std::any_of(acceptedTokens.begin(), acceptedTokens.end(), [&](std::string a) { return tokens[0].compare(a) == 0; }))
+    {
+      tokens.erase(tokens.begin());
+    }
     if (tokens.size() == 0)
+    {
       continue;
+    }
 
     if (tokens[0].compare("uci") == 0)
     {
@@ -76,14 +84,16 @@ int main()
       listSupportedOptions();
       continue;
     }
-    if (tokens[0].compare("debug") == 0) {
+    if (tokens[0].compare("debug") == 0)
+    {
       debug = tokens[1].compare("on") == 0;
       continue;
     }
     if (tokens[0].compare("isready") == 0)
     {
       board.resetBoard();
-      if (debug) printBoard(board);
+      if (debug)
+        printBoard(board);
       setupFinished();
       continue;
     }
