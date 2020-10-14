@@ -18,10 +18,12 @@ void listSupportedOptions()
   std::cout << "uciok" << std::endl;
 }
 
-void printBoard(const Board board)
+void printDebugInfo(const Board board)
 {
   std::cout << "[debug] board state: " << std::endl;
   std::cout << board << std::endl;
+  std::cout << "[debug] white king: " << board.kingSquares[0][0] << std::endl;
+  std::cout << "[debug] black king: " << board.kingSquares[0][1] << std::endl;
 }
 
 void setupFinished()
@@ -93,7 +95,9 @@ int main()
     {
       board.resetBoard();
       if (debug)
-        printBoard(board);
+      {
+        printDebugInfo(board);
+      }
       setupFinished();
       continue;
     }
