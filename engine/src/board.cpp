@@ -1,19 +1,37 @@
 #include "board.h"
 
+std::ostream &operator<<(std::ostream &os, const Square square)
+{
+  uint8_t file = (square.location & ((uint8_t)0xE0)) >> 5;
+  uint8_t rank = (square.location & ((uint8_t)0x1C)) >> 2;
+
+  if (square.location == INVALID_SQUARE)
+  {
+    os << "xx";
+  }
+  else
+  {
+    os.put('a' + (char)file);
+    os << (int)rank + 1;
+  }
+
+  return os;
+}
+
 template <int N>
-void bitboardToPieceList(const uint64_t bitboard[2], uint8_t pieceList[N][2], int side)
+void bitboardToPieceList(const uint64_t bitboard[2], Square pieceList[N][2], int side)
 {
   int counter = 0;
   for (int i = 0; i < 64; i++)
   {
     if (bitboard[side] & ((uint64_t)1 << i))
     {
-      pieceList[counter++][side] = ((uint8_t)(8 - i % 8) << 5) + ((uint8_t)(i / 8) << 2);
+      pieceList[counter++][side] = {(uint8_t)((uint8_t)((uint8_t)(7 - i % 8) << 5) | (uint8_t)((uint8_t)(i / 8) << 2))};
     }
   }
   for (; counter < N; counter++)
   {
-    pieceList[counter][side] = (uint8_t)0x03;
+    pieceList[counter][side] = {(uint8_t)0x03};
   }
 }
 
