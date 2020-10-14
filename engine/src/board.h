@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include <cstdint>
 
 #define MAX_PAWNS 8
@@ -40,3 +41,5 @@ struct Board
 
   void computePieceLists();
 };
+
+std::ostream& operator<<(std::ostream& os, const Board board);

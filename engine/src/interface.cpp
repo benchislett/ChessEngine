@@ -18,6 +18,11 @@ void listSupportedOptions()
   std::cout << "uciok" << std::endl;
 }
 
+void printBoard(const Board board) {
+  std::cout << "[debug] board state: " << std::endl;
+  std::cout << board << std::endl;
+}
+
 void setupFinished()
 {
   std::cout << "readyok" << std::endl;
@@ -57,6 +62,7 @@ std::vector<std::string> tokenizeLine(const std::string line)
 
 int main()
 {
+  bool debug = false;
   Board board;
   while (1)
   {
@@ -70,9 +76,14 @@ int main()
       listSupportedOptions();
       continue;
     }
+    if (tokens[0].compare("debug") == 0) {
+      debug = tokens[1].compare("on") == 0;
+      continue;
+    }
     if (tokens[0].compare("isready") == 0)
     {
       board.resetBoard();
+      if (debug) printBoard(board);
       setupFinished();
       continue;
     }

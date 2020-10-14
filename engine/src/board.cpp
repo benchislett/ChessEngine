@@ -8,7 +8,7 @@ void bitboardToPieceList(const uint64_t bitboard[2], uint8_t pieceList[N][2], in
   {
     if (bitboard[side] & ((uint64_t)1 << i))
     {
-      pieceList[counter++][side] = (uint8_t)(8 - i % 8) << 5 + (uint8_t)(i / 8) << 2;
+      pieceList[counter++][side] = ((uint8_t)(8 - i % 8) << 5) + ((uint8_t)(i / 8) << 2);
     }
   }
   for (; counter < N; counter++)
@@ -25,8 +25,8 @@ void Board::resetBoard()
   knightBoards[0] = (uint64_t)0x42;
   knightBoards[1] = (uint64_t)0x42 << 56;
 
-  bishopBoards[0] = (uint64_t)0x28;
-  bishopBoards[1] = (uint64_t)0x28 << 56;
+  bishopBoards[0] = (uint64_t)0x24;
+  bishopBoards[1] = (uint64_t)0x24 << 56;
 
   rookBoards[0] = (uint64_t)0x81;
   rookBoards[1] = (uint64_t)0x81 << 56;
@@ -51,4 +51,69 @@ void Board::computePieceLists()
     bitboardToPieceList<MAX_QUEENS>(queenBoards, queenSquares, side);
     bitboardToPieceList<MAX_KINGS>(kingBoards, kingSquares, side);
   }
+}
+
+std::ostream &operator<<(std::ostream &os, const Board board)
+{
+  for (int rank = 7; rank >= 0; rank--)
+  {
+    for (int file = 0; file < 8; file++)
+    {
+      uint64_t mask = ((uint64_t)1 << (7 - file)) << (8 * rank);
+      if (board.pawnBoards[0] & mask)
+      {
+        os << "P ";
+      }
+      else if (board.pawnBoards[1] & mask)
+      {
+        os << "p ";
+      }
+      else if (board.knightBoards[0] & mask)
+      {
+        os << "N ";
+      }
+      else if (board.knightBoards[1] & mask)
+      {
+        os << "n ";
+      }
+      else if (board.bishopBoards[0] & mask)
+      {
+        os << "B ";
+      }
+      else if (board.bishopBoards[1] & mask)
+      {
+        os << "b ";
+      }
+      else if (board.rookBoards[0] & mask)
+      {
+        os << "R ";
+      }
+      else if (board.rookBoards[1] & mask)
+      {
+        os << "r ";
+      }
+      else if (board.queenBoards[0] & mask)
+      {
+        os << "Q ";
+      }
+      else if (board.queenBoards[1] & mask)
+      {
+        os << "q ";
+      }
+      else if (board.kingBoards[0] & mask)
+      {
+        os << "K ";
+      }
+      else if (board.kingBoards[1] & mask)
+      {
+        os << "k ";
+      }
+      else
+      {
+        os << ". ";
+      }
+    }
+    os << "\b\n";
+  }
+  return os;
 }
