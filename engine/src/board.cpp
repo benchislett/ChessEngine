@@ -7,7 +7,7 @@ std::ostream &operator<<(std::ostream &os, const Square square)
 
   if (square.location == INVALID_SQUARE)
   {
-    os << "xx";
+    os << "00";
   }
   else
   {
