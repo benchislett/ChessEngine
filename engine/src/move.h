@@ -27,6 +27,7 @@ struct Move
 
   Move() {}
   Move(uint16_t d) : data(d) {}
+  Move(Square from, Square dest, uint16_t special);
   Move(const std::string &s);
 
   Square fromSquare() const;

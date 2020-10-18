@@ -1,5 +1,12 @@
 #include "move.h"
 
+Move::Move(Square from, Square dest, uint16_t special)
+{
+  data = (((uint16_t)from.location) << 8) |
+         (((uint16_t)dest.location) << 2) |
+         special;
+}
+
 Move::Move(const std::string &s)
 {
   uint16_t fromFile = s.at(0) - 'a';
