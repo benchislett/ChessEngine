@@ -1,5 +1,30 @@
 #include "board.h"
 
+Square::Square(uint8_t file, uint8_t rank)
+{
+  location = (file << 5) | (rank << 2);
+}
+
+bool Square::isValid() const
+{
+  return location == INVALID_SQUARE;
+}
+
+uint8_t Square::file() const
+{
+  return (location & SQUARE_FILE_MASK) >> 5;
+}
+
+uint8_t Square::rank() const
+{
+  return (location & SQUARE_RANK_MASK) >> 2;
+}
+
+uint64_t Square::bitboard() const
+{
+  return ((uint64_t)1 << (7 - file() + 8 * rank())
+}
+
 std::ostream &operator<<(std::ostream &os, const Square square)
 {
   uint8_t file = (square.location & ((uint8_t)0xE0)) >> 5;
@@ -54,6 +79,10 @@ void Board::resetBoard()
 
   kingBoards[0] = (uint64_t)0x8;
   kingBoards[1] = (uint64_t)0x8 << 56;
+
+  occupancyBoards[0] = pawnBoards[0] | knightBoards[0] | bishopBoards[0] | rookBoards[0] | queenBoards[0] | kingBoards[0];
+  occupancyBoards[1] = pawnBoards[1] | knightBoards[1] | bishopBoards[1] | rookBoards[1] | queenBoards[1] | kingBoards[1];
+  occupancyBoards[2] = occupancyBoards[0] | occupancyBoards[1];
 
   computePieceLists();
 }
