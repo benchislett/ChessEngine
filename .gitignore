@@ -16,5 +16,8 @@ _deps
 build.ninja
 
 # Build files
-build/*
-uciEngine
+engine/build/test
+uciInterface
+libengine.a
+
+uci-engine-interface-specification.txt

@@ -61,9 +61,12 @@ struct Board
   Square queenSquares[MAX_QUEENS][2];
   Square kingSquares[MAX_KINGS][2];
 
+  // Side to move. White 0, Black 1
+  int side;
+
   Board() {}
 
-  void resetBoard();
+  void reset();
 
   void computePieceLists();
 };
