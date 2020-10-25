@@ -94,7 +94,7 @@ int main()
     }
     if (tokens[0].compare("isready") == 0)
     {
-      board.resetBoard();
+      board.reset();
       if (debug)
       {
         printDebugInfo(board);
