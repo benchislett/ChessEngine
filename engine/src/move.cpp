@@ -7,7 +7,7 @@ Move::Move(Square from, Square dest, uint16_t special)
          special;
 }
 
-Move::Move(const std::string &s)
+Move::Move(const Board &b, const std::string &s)
 {
   uint16_t fromFile = s.at(0) - 'a';
   uint16_t destFile = s.at(2) - 'a';
@@ -16,23 +16,30 @@ Move::Move(const std::string &s)
   uint16_t destRank = s.at(3) - '1';
 
   uint16_t special = 0x00;
+
+  Square dest(destFile, destRank);
+  if (b.occupancyBoards[2] & dest.bitboard())
+  {
+    special |= MOVE_CAPTURE_MASK;
+  }
+
   if (s.length() > 4)
   {
     if (s.at(4) == 'q' || s.at(4) == 'Q')
     {
-      special = PROMOTE_QUEEN_MASK;
+      special |= PROMOTE_QUEEN_MASK;
     }
     else if (s.at(4) == 'r' || s.at(4) == 'R')
     {
-      special = PROMOTE_ROOK_MASK;
+      special |= PROMOTE_ROOK_MASK;
     }
     else if (s.at(4) == 'b' || s.at(4) == 'B')
     {
-      special = PROMOTE_BISHOP_MASK;
+      special |= PROMOTE_BISHOP_MASK;
     }
     else if (s.at(4) == 'n' || s.at(4) == 'N')
     {
-      special = PROMOTE_KNIGHT_MASK;
+      special |= PROMOTE_KNIGHT_MASK;
     }
   }
 

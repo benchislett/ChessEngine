@@ -7,7 +7,7 @@ Square::Square(uint8_t file, uint8_t rank)
 
 bool Square::isValid() const
 {
-  return location == INVALID_SQUARE;
+  return location != INVALID_SQUARE;
 }
 
 uint8_t Square::file() const
@@ -22,7 +22,7 @@ uint8_t Square::rank() const
 
 uint64_t Square::bitboard() const
 {
-  return ((uint64_t)1 << (7 - file() + 8 * rank())
+  return (uint64_t)1 << (7 - file() + 8 * rank());
 }
 
 std::ostream &operator<<(std::ostream &os, const Square square)
@@ -56,11 +56,11 @@ void bitboardToPieceList(const uint64_t bitboard[2], Square pieceList[N][2], int
   }
   for (; counter < N; counter++)
   {
-    pieceList[counter][side] = {(uint8_t)0x03};
+    pieceList[counter][side] = {INVALID_SQUARE};
   }
 }
 
-void Board::resetBoard()
+void Board::reset()
 {
   pawnBoards[0] = (uint64_t)0xff << 8;
   pawnBoards[1] = (uint64_t)0xff << 48;
@@ -85,6 +85,8 @@ void Board::resetBoard()
   occupancyBoards[2] = occupancyBoards[0] | occupancyBoards[1];
 
   computePieceLists();
+
+  side = 0;
 }
 
 void Board::computePieceLists()
@@ -160,7 +162,7 @@ std::ostream &operator<<(std::ostream &os, const Board board)
         os << ". ";
       }
     }
-    os << "\b\n";
+    os << "\n";
   }
   return os;
 }
